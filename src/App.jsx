@@ -11,7 +11,7 @@ const App = () => {
     new Date(current.getFullYear(), current.getMonth(), current.getDate() + (current.getHours() > 21 ? 1 : 0), 22, 0, 0, 0).toISOString(),
   ]);
 
-  const [remainingWork, setRemainingWork] = useLocalStorageState("remainingWork", 0);
+  const [remainingWork, setRemainingWork] = useLocalStorageState("remainingWork", [0]);
 
   const nowDt = new Date(now);
   const periodDt = period.map(dt => new Date(dt));
@@ -39,7 +39,7 @@ const App = () => {
       new Date(current.getFullYear(), current.getMonth(), current.getDate() + (current.getHours() > 21 ? 1 : 0), 10, 0, 0, 0).toISOString(),
       new Date(current.getFullYear(), current.getMonth(), current.getDate() + (current.getHours() > 21 ? 1 : 0), 22, 0, 0, 0).toISOString(),
     ]);
-    setRemainingWork(0);
+    setRemainingWork([0]);
   }
 
   const startToUse = periodDt[0] > nowDt ? periodDt[0] : nowDt;
@@ -47,7 +47,8 @@ const App = () => {
   const hoursRemaining = Math.floor(secondsRemaining / 3600);
   const minutesRemaining = Math.floor((secondsRemaining % 3600) / 60);
 
-  const workPerHour = remainingWork / (secondsRemaining / 3600);
+  const totalRemainingWork = remainingWork.reduce((acc, curr) => acc + curr, 0);
+  const workPerHour = totalRemainingWork / (secondsRemaining / 3600);
 
   return (
     <div className="p-2">
@@ -75,13 +76,8 @@ const App = () => {
       </div>
 
       <div className="mt-8">
-        <input
-          type="number"
-          className="w-12 text-right"
-          value={remainingWork}
-          onChange={(e) => setRemainingWork(e.target.value)}
-        />
-        <label>minutes of work remaining</label>
+        
+        {totalRemainingWork} minutes of work remaining
       </div>
 
       <div className="mt-8">
@@ -89,67 +85,24 @@ const App = () => {
       </div>
 
 
-      {/* <div className="flex flex-col mt-8">
-        <label className="text-xs">End of day</label>
-        <input
-          type="datetime-local"
-          value={endString}
-          onChange={(e) => setEnd(new Date(e.target.value))}
-        />
-        <div className="text-sm">
-          {hoursRemaining} hour{hoursRemaining === 1 ? "" : "s"} {minutesRemaining} minute{minutesRemaining === 1 ? "" : "s"}
-        </div>
-      </div> */}
-
-      {/* <div className="mt-8">
-        <input
-          type="number"
-          className="w-12 text-right"
-          value={remainingWork}
-          onChange={(e) => setRemainingWork(e.target.value)}
-        />
-        <label>Minutes remaining</label>
-        <div>
-          {workPerHour}
-        </div>
-      </div> */}
-      
+      <div className="mt-8 border flex">
+        {remainingWork.map((minutes, index) => (
+          <div key={index} className="p-2">
+            <button onClick={() => setRemainingWork(remainingWork.filter((_, i) => i !== index))}>-</button>
+            <input
+              type="number"
+              className="border"
+              value={minutes}
+              onChange={(e) => setRemainingWork(remainingWork.map((m, i) => i === index ? (parseInt(e.target.value) || 0) : m))}
+            />
+          </div>
+        ))}
+        <button onClick={() => setRemainingWork([...remainingWork, 0])}>+</button>
+      </div>
 
     </div>
   )
 }
-
-  
-  /* const [remainingMinutes, setRemainingMinutes] = useState(0);
-
-  const todayAtTen = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
-
-  const secondsRemaining = Math.round((todayAtTen.getTime() - now.getTime()) / 1000);
-
-   */
-
-  /* return (
-    <div>
-      <div className="flex flex-col gap-1 border p-2 w-fit">
-        <label>End of day</label>
-        <input
-          type="datetime-local"
-          value={target}
-          onChange={(e) => setTarget(e.target.value)}
-        />
-        <label>Remaining minutes</label>
-        <div>{secondsRemaining}</div>
-      </div>
-      <div className="flex flex-col gap-1 border p-2 w-fit">
-        <label>Remaining minutes</label>
-        <input
-          type="number"
-          value={remainingMinutes}
-          onChange={(e) => setRemainingMinutes(e.target.value)}
-        />
-      </div>
-    </div>
-  ); */
 
 App.propTypes = {
   
