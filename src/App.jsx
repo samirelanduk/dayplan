@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
-
+import { useLocalStorageState } from "./hooks";
 const App = () => {
 
-  
-  const [now, setNow] = useState(new Date());
-  const [end, setEnd] = useState(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0));
-  const [remainingWork, setRemainingWork] = useState(0);
+  const current = new Date();
+  const [now, setNow] = useLocalStorageState("now", current.toISOString());
+  const [end, setEnd] = useLocalStorageState("end", new Date(current.getFullYear(), current.getMonth(), current.getDate(), 22, 0, 0, 0).toISOString());
+  const [remainingWork, setRemainingWork] = useLocalStorageState("remainingWork", 0);
+
+  const nowDt = new Date(now);
+  const endDt = new Date(end);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setNow(new Date());
+      setNow(new Date().toISOString());
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [setNow]);
 
   const dtToString = dt => {
     const year = dt.getFullYear();
@@ -24,8 +27,8 @@ const App = () => {
     return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
   }
 
-  const endString = dtToString(end);
-  const secondsRemaining = Math.round((end.getTime() - now.getTime()) / 1000);
+  const endString = dtToString(endDt);
+  const secondsRemaining = Math.round((endDt.getTime() - nowDt.getTime()) / 1000);
   const hoursRemaining = Math.floor(secondsRemaining / 3600);
   const minutesRemaining = Math.floor((secondsRemaining % 3600) / 60);
   const workPerHour = remainingWork / (secondsRemaining / 3600);
