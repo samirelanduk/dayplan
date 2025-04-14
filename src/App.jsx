@@ -27,6 +27,12 @@ const App = () => {
     return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
   }
 
+  const reset = () => {
+    setNow(current.toISOString());
+    setEnd(new Date(current.getFullYear(), current.getMonth(), current.getDate(), 22, 0, 0, 0).toISOString());
+    setRemainingWork(0);
+  }
+
   const endString = dtToString(endDt);
   const secondsRemaining = Math.round((endDt.getTime() - nowDt.getTime()) / 1000);
   const hoursRemaining = Math.floor(secondsRemaining / 3600);
@@ -35,7 +41,11 @@ const App = () => {
 
   return (
     <div className="p-2">
-      <div>{now.toLocaleString()}</div>
+
+      <div className="flex justify-between">
+        <div>{now.toLocaleString()}</div>
+        <button onClick={reset}>Reset</button>
+      </div>
 
 
       <div className="flex flex-col mt-8">
