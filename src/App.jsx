@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocalStorageState } from "./hooks";
+import DelayedInput from "./DelayedInput";
 
 const App = () => {
 
@@ -89,7 +90,7 @@ const App = () => {
         {remainingWork.map((minutes, index) => (
           <div key={index} className="p-2">
             <button onClick={() => setRemainingWork(remainingWork.filter((_, i) => i !== index))}>-</button>
-            <input
+            <DelayedInput
               type="number"
               className="border"
               value={minutes}
