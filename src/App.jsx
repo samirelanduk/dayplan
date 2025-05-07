@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useLocalStorageState } from "./hooks";
 import DelayedInput from "./DelayedInput";
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 const App = () => {
 
@@ -51,6 +53,16 @@ const App = () => {
   const totalRemainingWork = remainingWork.reduce((acc, curr) => acc + curr, 0);
   const workPerHour = totalRemainingWork / (secondsRemaining / 3600);
 
+  const chartOptions = {
+    chart: {
+      type: "line"
+    },
+    xAxis: {
+      type: "datetime"
+    },
+    series: []
+  };
+
   return (
     <div className="p-2">
 
@@ -99,6 +111,13 @@ const App = () => {
           </div>
         ))}
         <button onClick={() => setRemainingWork([...remainingWork, 0])}>+</button>
+      </div>
+
+      <div className="mt-8">
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={chartOptions}
+        />
       </div>
 
     </div>
