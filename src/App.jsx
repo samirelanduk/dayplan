@@ -67,7 +67,14 @@ const App = () => {
     <div className="p-2">
 
       <div className="flex justify-between">
-        <div>{now.toLocaleString()}</div>
+        <div>{nowDt.toLocaleString(undefined, {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        })}</div>
         <button onClick={reset}>Reset</button>
       </div>
 
