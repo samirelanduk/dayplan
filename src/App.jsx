@@ -96,8 +96,14 @@ const App = () => {
       </div>
 
       <div className="mt-8">
-        
-        {totalRemainingWork} minutes of work remaining
+        {totalRemainingWork >= 60 ? (
+          <>
+            {Math.floor(totalRemainingWork / 60)} hour{Math.floor(totalRemainingWork / 60) === 1 ? "" : "s"}
+            {totalRemainingWork % 60 > 0 && ` and ${totalRemainingWork % 60} minute${totalRemainingWork % 60 === 1 ? "" : "s"}`}
+          </>
+        ) : (
+          `${totalRemainingWork} minute${totalRemainingWork === 1 ? "" : "s"}`
+        )} of work remaining
       </div>
 
       <div className="mt-8">
