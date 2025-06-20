@@ -114,7 +114,7 @@ const App = () => {
       <div className="mt-8 border flex">
         {remainingWork.map((minutes, index) => (
           <div key={index} className="p-2">
-            <button onClick={() => setRemainingWork(remainingWork.filter((_, i) => i !== index))}>-</button>
+            <button tabIndex={-1} onClick={() => setRemainingWork(remainingWork.filter((_, i) => i !== index))}>-</button>
             <DelayedInput
               type="number"
               className="border"
