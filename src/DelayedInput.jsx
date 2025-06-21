@@ -14,7 +14,7 @@ const DelayedInput = props => {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       onChange(e);
-    }, 1000);
+    }, 1500);
   }
 
   return (
