@@ -111,7 +111,7 @@ const App = () => {
       </div>
 
 
-      <div className="mt-8 border flex">
+      <div className="mt-8 border flex w-fit pr-2">
         {remainingWork.map((minutes, index) => (
           <div key={index} className="p-2">
             <button tabIndex={-1} onClick={() => setRemainingWork(remainingWork.filter((_, i) => i !== index))}>-</button>
