@@ -53,6 +53,15 @@ const App = () => {
   const totalRemainingWork = remainingWork.reduce((acc, curr) => acc + curr, 0);
   const workPerHour = totalRemainingWork / (secondsRemaining / 3600);
 
+  const nowString = nowDt.toLocaleString(undefined, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+
   const chartOptions = {
     chart: {
       type: "line"
@@ -64,38 +73,31 @@ const App = () => {
   };
 
   return (
-    <div className="p-2">
+    <div className="p-4 max-w-3xl mx-auto">
 
-      <div className="flex justify-between">
-        <div>{nowDt.toLocaleString(undefined, {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit"
-        })}</div>
-        <button onClick={reset}>Reset</button>
+      <div className="flex justify-between items-center">
+        <div className="text-lg">{nowString}</div>
+        <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded" onClick={reset}>Reset</button>
       </div>
 
-      <div className="flex mt-4">
-        <div className="flex flex-col gap-1 border p-2 w-fit">
-          <label>Start</label>
-          <input type="datetime-local" value={dtToString(periodDt[0])} onChange={(e) => setPeriod([e.target.value, period[1]])} />
+      <div className="flex mt-6">
+        <div className="flex flex-col gap-2 border rounded-l p-3 w-fit">
+          <label className="text-sm text-gray-600">Start</label>
+          <input type="datetime-local" className="border rounded px-2 py-1" value={dtToString(periodDt[0])} onChange={(e) => setPeriod([e.target.value, period[1]])} />
         </div>
-        <div className="flex flex-col gap-1 border border-l-0 p-2 w-fit">
-          <label>End</label>
-          <input type="datetime-local" value={dtToString(periodDt[1])} onChange={(e) => setPeriod([period[0], e.target.value])} />
+        <div className="flex flex-col gap-2 border border-l-0 rounded-r p-3 w-fit">
+          <label className="text-sm text-gray-600">End</label>
+          <input type="datetime-local" className="border rounded px-2 py-1" value={dtToString(periodDt[1])} onChange={(e) => setPeriod([period[0], e.target.value])} />
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-6 text-lg">
         {hoursRemaining} hour{hoursRemaining === 1 ?  "" : "s"}
         {minutesRemaining > 0 && ` ${minutesRemaining} minute${minutesRemaining === 1 ? "" : "s"}`}
         {" "}remaining
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 text-lg">
         {totalRemainingWork >= 60 ? (
           <>
             {Math.floor(totalRemainingWork / 60)} hour{Math.floor(totalRemainingWork / 60) === 1 ? "" : "s"}
@@ -106,24 +108,23 @@ const App = () => {
         )} of work remaining
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 text-lg">
         Need to do <span className="font-bold">{Math.ceil(workPerHour)}</span> minutes of work per hour
       </div>
 
-
-      <div className="mt-8 border flex w-fit pr-2">
+      <div className="mt-8 border rounded flex w-fit items-center">
         {remainingWork.map((minutes, index) => (
-          <div key={index} className="p-2">
-            <button tabIndex={-1} onClick={() => setRemainingWork(remainingWork.filter((_, i) => i !== index))}>-</button>
+          <div key={index} className="p-3 flex items-center gap-2">
+            <button className="w-6 h-6 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded" tabIndex={-1} onClick={() => setRemainingWork(remainingWork.filter((_, i) => i !== index))}>-</button>
             <DelayedInput
               type="number"
-              className="border"
+              className="border rounded w-16 px-2 py-1"
               value={minutes}
               onChange={(e) => setRemainingWork(remainingWork.map((m, i) => i === index ? (parseInt(e.target.value) || 0) : m))}
             />
           </div>
         ))}
-        <button onClick={() => setRemainingWork([...remainingWork, 0])}>+</button>
+        <button className="px-3 hover:bg-gray-50" onClick={() => setRemainingWork([...remainingWork, 0])}>+</button>
       </div>
 
       <div className="mt-8">
