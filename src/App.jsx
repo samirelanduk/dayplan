@@ -72,6 +72,10 @@ const App = () => {
     series: []
   };
 
+  const onChange = (e, index, remainingWork) => {
+    setRemainingWork(remainingWork.map((m, i) => i === index ? (parseInt(e.target.value) || 0) : m));
+  }
+
   return (
     <div className="p-4 max-w-3xl mx-auto">
 
@@ -120,7 +124,7 @@ const App = () => {
               type="number"
               className="border rounded w-16 px-2 py-1"
               value={minutes}
-              onChange={(e) => setRemainingWork(remainingWork.map((m, i) => i === index ? (parseInt(e.target.value) || 0) : m))}
+              onChange={(e, remainingWork) => onChange(e, index, remainingWork)}
             />
           </div>
         ))}

@@ -9,12 +9,14 @@ const DelayedInput = props => {
 
   const timeoutRef = useRef(null);
 
+  const DELAY = 1500;
+
   const valueChanged = e => {
     setDisplayValue(e.target.value);
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
-      onChange(e);
-    }, 1500);
+      onChange(e, JSON.parse(localStorage.getItem("remainingWork")));
+    }, DELAY);
   }
 
   return (
