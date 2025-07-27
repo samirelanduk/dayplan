@@ -124,6 +124,7 @@ const App = () => {
               type="number"
               className="border rounded w-16 px-2 py-1"
               value={minutes}
+              step={5}
               onChange={(e, remainingWork) => onChange(e, index, remainingWork)}
             />
           </div>
