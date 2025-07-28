@@ -15,6 +15,7 @@ const App = () => {
   ]);
 
   const [remainingWork, setRemainingWork] = useLocalStorageState("remainingWork", [0]);
+  const [updateHistory, setUpdateHistory] = useLocalStorageState("updateHistory", []);
 
   const nowDt = new Date(now);
   const periodDt = period.map(dt => new Date(dt));
@@ -43,6 +44,7 @@ const App = () => {
       new Date(current.getFullYear(), current.getMonth(), current.getDate() + (current.getHours() > 21 ? 1 : 0), 22, 0, 0, 0).toISOString(),
     ]);
     setRemainingWork([0]);
+    setUpdateHistory([]);
   }
 
   const startToUse = periodDt[0] > nowDt ? periodDt[0] : nowDt;
@@ -74,6 +76,10 @@ const App = () => {
 
   const onChange = (e, index, remainingWork) => {
     setRemainingWork(remainingWork.map((m, i) => i === index ? (parseInt(e.target.value) || 0) : m));
+    setUpdateHistory([...updateHistory, {
+      time: new Date().toISOString(),
+      remainingWork: remainingWork.map((m, i) => i === index ? (parseInt(e.target.value) || 0) : m)
+    }]);
   }
 
   return (
